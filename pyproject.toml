@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "luba-api"
+version = "0.1.0"
+description = ""
+authors = ["Andrea Cagnola"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.12,<3.13"
+pyluba = "^0.0.37"
+Flask = "^3.0.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
