@@ -12,8 +12,8 @@ Work in progress (partially working)
 
 ## Endpoint
 
-1. http://127.0.0.1:5000/devices -> return the list of devices linked to your account (take note of iotId)
-2. http://127.0.0.1:5000/{iotid}/status -> (Replace iot id that you recovered from the previous step) -> Displays the device status
+1. http://127.0.0.1:5000/api/devices -> return the list of devices linked to your account (take note of iotId)
+2. http://127.0.0.1:5000/api/{iotid}/status -> (Replace iot id that you recovered from the previous step) -> Displays the device status
 
 ## Legal Disclaimer
 The software provided in this repository is offered "as-is" and the author makes no representations or warranties of any kind concerning the software, express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, or non-infringement. In no event shall the author be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
