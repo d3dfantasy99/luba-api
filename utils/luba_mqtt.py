@@ -10,6 +10,9 @@ from datetime import datetime, timedelta
 from linkkit.linkkit import LinkKit
 from paho.mqtt.client import Client, MQTTMessage, MQTTv311, connack_string
 
+from pyluba.data.model.enums import RTKStatus
+from pyluba.utility.constant.device_constant import WorkMode, device_mode
+
 from pyluba.data.model import RapidState
 from pyluba.data.mqtt.event import ThingEventMessage
 from pyluba.data.mqtt.properties import ThingPropertiesMessage
@@ -307,8 +310,62 @@ class LubaMQTT(BaseLuba):
         logger.debug("Parsing ok")
         self._statusList[iotId] = LubaMsg().from_dict(raw_data)
     
-    def get_device_status_by_iotId(self, iotId: str) -> str:
+    def get_device_status_by_iotId(self, iotId: str, format:str = None) -> str:
         if(iotId in self._statusList):
+            if format is not None:
+                data = self._statusList[iotId]
+                if format == "human":
+                    device = {
+                        "battery_status": f"{str(data.sys.toapp_report_data.dev.battery_val)}%" + (" (Charging)" if data.sys.toapp_report_data.dev.charge_state == 1 else ""),
+                        "wifiRSSI": f"{str(data.sys.toapp_report_data.connect.wifi_rssi)}dBm",
+                        "bleRSSI": f"{str(data.sys.toapp_report_data.connect.ble_rssi)}dBm",
+                        "robot_status": device_mode(data.sys.toapp_report_data.dev.sys_status)
+                    }
+                    rtk = {
+                        "pos_status": str(RTKStatus.from_value(data.sys.toapp_report_data.rtk.status)),
+                        "robot_sat": str(data.sys.toapp_report_data.rtk.gps_stars) + "L1 " + str(data.sys.toapp_report_data.rtk.l2_stars) + "L2",
+                        "ref_station_sat": str(int(data.sys.toapp_report_data.rtk.dis_status) >> 16 & 255) + "L1 " + str(int(data.sys.toapp_report_data.rtk.dis_status) >> 24 & 255) + "L2",
+                        "co_view_sat" : str(int(data.sys.toapp_report_data.rtk.co_view_stars) >> 0 & 255) + "L1 " + str(int(data.sys.toapp_report_data.rtk.co_view_stars) >> 8 & 255) + "L2",
+                        "signal_quality_robot": "", #toDo
+                        "signal_quality_ref_station": "", #toDo
+                        "lora_status": "Connected" if data.sys.toapp_report_data.rtk.lora_info.lora_connection_status == 1 else "Disconnected",
+                        "lora_number": str(data.sys.toapp_report_data.rtk.lora_info.pair_code_scan) + "." + str(data.sys.toapp_report_data.rtk.lora_info.pair_code_channel) + "." + str(data.sys.toapp_report_data.rtk.lora_info.pair_code_locid) + "." + str(data.sys.toapp_report_data.rtk.lora_info.pair_code_netid),
+                    }
+                    location = {}
+
+                    if len(data.sys.toapp_report_data.locations) > 0:
+                        loc = data.sys.toapp_report_data.locations[0]
+                        loc.real_pos_x
+                        location = {
+                            "lat": str(self.get_parse_double_data(loc.real_pos_x, 4)),
+                            "lon": str(self.get_parse_double_data(loc.real_pos_y, 4)),
+                        }
+                    work = {}
+
+                    if(data.sys.toapp_report_data.dev.sys_status >= 13 and data.sys.toapp_report_data.dev.sys_status <= 19):
+                        work = {
+                            "total_area": str(data.sys.toapp_report_data.work.area & 65535) + "m²",
+                            "mowing_speed": str(data.sys.toapp_report_data.work.man_run_speed / 100) + "m/s",
+                            "progress": str(data.sys.toapp_report_data.work.area >> 16) + "%",
+                            "total_time": str(data.sys.toapp_report_data.work.progress >> 65535) + "min",
+                            "elapsed_time": str(data.sys.toapp_report_data.work.progress >> 65535) + "min",
+                            "left_time": str(data.sys.toapp_report_data.work.progress >> 16)+ "min",
+                            "blade_height": str(data.sys.toapp_report_data.work.knife_height)+ "mm"
+                        }
+
+                    content = {
+                        "device": device,
+                        "rtk": rtk,
+                        "location": location,
+                        "work": work,
+                    }
+
+                    return json.dumps(content)
             return self._statusList[iotId].to_json()
         else:
             return "{}"
+
+    def get_parse_double_data(self, value, digits):
+        """Converte un intero in un float con un numero specifico di cifre decimali."""
+        format_string = f"{{:.{digits}f}}"
+        return float(format_string.format(value))

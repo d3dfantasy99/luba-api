@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luba control Panel - V 1.0</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Luba control Panel - V 1.0</h1>
+        </header>
+        <main>
+            <section class="status">
+                <h2>Robot Info</h2>
+                <div class="info-grid">
+                    <div>
+                        <strong>Robot status:</strong> <span id="robot_status">N/A</span>
+                    </div>
+                    <div>
+                        <strong>Battery:</strong> <span id="battery_status">--%</span>
+                    </div>
+                    <div>
+                        <strong>WiFi RSSI:</strong> <span id="wifiRSSI">--</span>
+                    </div>
+                    <div>
+                        <strong>Bluetooth RSSI:</strong> <span id="bleRSSI">--</span>
+                    </div>
+                    <div>
+                        <strong>Robot name:</strong> <span id="robot_name">{{device.deviceName}} ({{device.nick_name}})</span>
+                    </div>
+                    <div>
+                        <strong>Robot model:</strong> <span id="robot_serial">{{device.productModel}}</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="status">
+                <h2>Position</h2>
+                <div class="info-grid">
+                    <div>
+                        <strong>Position status:</strong> <span id="pos_status">None</span>
+                    </div>
+                    <div>
+                        <strong>Sat (robot):</strong> <span id="robot_sat">0</span>
+                    </div>
+                    <div>
+                        <strong>Sat (ref. station):</strong> <span id="ref_station_sat">L1:0 L2:0</span>
+                    </div>
+                    <div>
+                        <strong>Sat (co-viewed):</strong> <span id="co_view_sat">L1:0 L2:0</span>
+                    </div>
+                    <div>
+                        <strong>Signal quality (robot):</strong> <span id="signal_quality_robot">None</span>
+                    </div>
+                    <div>
+                        <strong>Signal quality (ref. station):</strong> <span id="signal_quality_ref_station">None</span>
+                    </div>
+                    <div>
+                        <strong>LoRa status:</strong> <span id="lora_status">Disconnected</span>
+                    </div>
+                    <div>
+                        <strong>LoRa number:</strong> <span id="lora_number">N/A</span>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="status">
+                <h2>Location</h2>
+                <div class="info-grid">
+                    <div>
+                        <strong>Latitude:</strong> <span id="lat">N/A</span>
+                    </div>
+                    <div>
+                        <strong>Longitude:</strong> <span id="lon">N/A</span>
+                    </div>
+                    
+                </div>
+            </section>
+
+
+            <section class="status">
+                <h2>Work</h2>
+                <div class="info-grid">
+                    <div>
+                        <strong>Total area:</strong> <span id="total_area">N/A</span>
+                    </div>
+                    <div>
+                        <strong>Mowing speed:</strong> <span id="mowing_speed">N/A</span>
+                    </div>
+                    <div>
+                        <strong>Progress:</strong> <span id="progress">N/A</span>
+                    </div>
+                    <div>
+                        <strong>Total time:</strong> <span id="total_time">N/A</span>
+                    </div>
+                    <div>
+                        <strong>Elapsed time:</strong> <span id="elapsed_time">N/A</span>
+                    </div>
+                    <div>
+                        <strong>Left time:</strong> <span id="left_time">N/A</span>
+                    </div>
+                    <div>
+                        <strong>Blade height:</strong> <span id="blade_height">N/A</span>
+                    </div>
+                </div>
+            </section>
+            
+        </main>
+    </div>
+    <script>
+        const url = 'http://127.0.0.1:5001/api/{{device.iotID}}/status?format=human';
+    </script>
+    <script src="{{ url_for('static', filename='js/index.js')}}"></script>
+</body>
+</html>

@@ -9,8 +9,8 @@ logger = logging.getLogger(__name__)
 
 _web_server = None
 
-EMAIL = "youremail@gmail.com"
-PASSWORD = "yourPassword"
+EMAIL = ""
+PASSWORD = ""
 
 async def run():
     await _web_server.account_utils.login(EMAIL, PASSWORD)

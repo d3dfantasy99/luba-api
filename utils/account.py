@@ -56,6 +56,31 @@ class AccountUtils:
         
         return device_list
     
+    def get_device_by_iotId(self, iotId: str):
+        # Esempio di dati di dispositivi ottenuti dinamicamente
+        device = None
+        
+        # Esempio di aggiunta dinamica di dati di dispositivi
+        for device in self._lubaMQTT._cloud_client._listing_dev_by_account_response.data.data:
+            if(device.iotId == iotId):
+                device_name = f"{device.deviceName}"
+                nick_name = f"{device.nickName}"
+                product_model = f"{device.productModel}"
+                product_key = f"{device.productKey}"
+                iot_id = f"{device.iotId}"
+                status = "Online" if int(device.status) == 1 else "Offline"
+                device = {
+                    "deviceName": device_name,
+                    "nick_name": nick_name,
+                    "productModel": product_model,
+                    "productKey": product_key,
+                    "iotID": iot_id,
+                    "status": status
+                }
+                return device
+        
+        return device
+    
     def get_device_list_init(self, listing_dev_by_account_response):
         # Esempio di dati di dispositivi ottenuti dinamicamente
         device_list = []
