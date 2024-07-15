@@ -73,7 +73,7 @@ class WebServer:
             
 
     def run(self):
-        self.app.run(debug=True, use_reloader=False, port=5000)
+        self.app.run(host="0.0.0.0", debug=True, use_reloader=False, port=5000)
 
     def start(self):
         if self.thread is None:
