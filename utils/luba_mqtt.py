@@ -323,7 +323,7 @@ class LubaMQTT(BaseLuba):
                     }
                     rtk = {
                         "pos_status": str(RTKStatus.from_value(data.sys.toapp_report_data.rtk.status)),
-                        "robot_sat": str(data.sys.toapp_report_data.rtk.gps_stars) + "L1 " + str(data.sys.toapp_report_data.rtk.l2_stars) + "L2",
+                        "robot_sat": str(data.sys.toapp_report_data.rtk.gps_stars),
                         "ref_station_sat": str(int(data.sys.toapp_report_data.rtk.dis_status) >> 16 & 255) + "L1 " + str(int(data.sys.toapp_report_data.rtk.dis_status) >> 24 & 255) + "L2",
                         "co_view_sat" : str(int(data.sys.toapp_report_data.rtk.co_view_stars) >> 0 & 255) + "L1 " + str(int(data.sys.toapp_report_data.rtk.co_view_stars) >> 8 & 255) + "L2",
                         "signal_quality_robot": "", #toDo
@@ -347,8 +347,8 @@ class LubaMQTT(BaseLuba):
                             "total_area": str(data.sys.toapp_report_data.work.area & 65535) + "m²",
                             "mowing_speed": str(data.sys.toapp_report_data.work.man_run_speed / 100) + "m/s",
                             "progress": str(data.sys.toapp_report_data.work.area >> 16) + "%",
-                            "total_time": str(data.sys.toapp_report_data.work.progress >> 65535) + "min",
-                            "elapsed_time": str(data.sys.toapp_report_data.work.progress >> 65535) + "min",
+                            "total_time": str(data.sys.toapp_report_data.work.progress & 65535) + "min",
+                            "elapsed_time": str((data.sys.toapp_report_data.work.progress & 65535) - (data.sys.toapp_report_data.work.progress >> 16)) + "min",
                             "left_time": str(data.sys.toapp_report_data.work.progress >> 16)+ "min",
                             "blade_height": str(data.sys.toapp_report_data.work.knife_height)+ "mm"
                         }
