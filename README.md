@@ -24,7 +24,7 @@ The software provided in this repository is offered "as-is" and the author makes
 
 Users of this software assume all risks associated with its use, including but not limited to the risk of damage to hardware, loss of data, and account suspension or bans. The author disclaims any responsibility for any such consequences.
 
-Trademark Notice
+## Trademark Notice
 
 The trademarks "Mammotion," "Luba," and "Yuka" referenced herein are registered trademarks of their respective owners. The author of this software repository is not affiliated with, endorsed by, or connected to these trademark owners in any way.
 
