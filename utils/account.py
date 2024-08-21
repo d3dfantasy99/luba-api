@@ -225,6 +225,10 @@ class AccountUtils:
                                 nick_name=device.nickName
                             )
                             self._devices_list.append(dev)
+                    
+                    self._mammotionMQTT.on_message = lambda topic, payload, iot_id: [
+                        device._on_mqtt_message(topic, payload) for device in self._devices_list if device.iot_id == iot_id
+                    ]
                     return True
         except Exception as ex:
             logger.error(f"{ex}")
