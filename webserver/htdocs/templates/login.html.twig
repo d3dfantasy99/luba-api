@@ -1,0 +1,21 @@
+{% extends "base_login.html.twig" %}
+
+{% block title %}Login{% endblock %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/login.css')}}">
+{% endblock %}
+
+{% block body %}
+  <div class="container">
+      <div class="card">
+        <h2>Login</h2>
+        <form method = "POST" action "/login">
+          <input type="email" id="email" name="email" placeholder="Mammotion account email" required>
+          <input type="password" id="password" name="password" placeholder="Mammotion account password" required>
+          
+          <button type="submit">Login</button>
+        </form>
+      </div>
+  </div>
+{% endblock %}

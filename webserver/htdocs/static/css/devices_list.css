@@ -1,0 +1,17 @@
+#swal-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.swal-item {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.swal-item:hover {
+    background-color: #f0f0f0;
+}

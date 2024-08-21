@@ -1,0 +1,35 @@
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #ffffff;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    border-top: 1px solid #dddddd;
+}
+
+.nav-item {
+    text-align: center;
+    color: #555555;
+    text-decoration: none;
+    font-size: 14px;
+    flex-grow: 1;
+}
+
+.nav-item i {
+    font-size: 24px;
+    margin-bottom: 4px;
+}
+
+.nav-item .nav-label {
+    display: block;
+    font-size: 12px;
+}
+
+
+
+.bottom-nav a.selected {
+    color: green;
+}

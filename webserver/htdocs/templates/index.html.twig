@@ -1,17 +1,30 @@
-<!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luba control Panel - V 1.0</title>
+{% extends "base.html.twig" %}
+
+{% block title %}Home{% endblock %}
+
+{% block stylesheet %}
     <link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}">
-</head>
-<body>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/devices_list.css')}}">
+{% endblock %}
+
+{% block body %}
     <div class="container">
         <header>
-            <h1>Luba control Panel - V 1.0</h1>
+            <h1>Mammotion control Panel - V 1.0</h1>
         </header>
         <main>
+            <div class = "deviceName" onclick="showDevicesList()">
+                <span>{{device.deviceName}} ({{device.nick_name}})</span>
+            </div>
+            <div class="imgContainer">
+                <img class = "carImage" src = "/static/img/{{imagePath}}">
+                <div class="right-text">
+                    <p><button class = "buttonsSendCmd" data-iot-id = "{{device.iotID}}" data-cmd = "leave_dock" data-param = "">Leave Dock</button></p>
+                    <p><button class = "buttonsSendCmd" data-iot-id = "{{device.iotID}}" data-cmd = "recharge" data-param = "">Recharge</button></p>
+                </div>
+            </div>
+
+            
             <section class="status">
                 <h2>Robot Info</h2>
                 <div class="info-grid">
@@ -108,10 +121,13 @@
             </section>
             
         </main>
+        
     </div>
+    
     <script>
         const url = '/api/{{device.iotID}}/status?format=human';
     </script>
     <script src="{{ url_for('static', filename='js/index.js')}}"></script>
-</body>
-</html>
+    <script src="{{ url_for('static', filename='js/device_select_popup.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/device_commands.js')}}"></script>
+{% endblock %}

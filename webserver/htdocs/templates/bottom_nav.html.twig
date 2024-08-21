@@ -1,0 +1,20 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="{{url_for('static', filename='css/bottom_nav.css')}}">
+<div class="bottom-nav" style = "margin-top:50px">
+    <a href="/{{device.iotID}}" class="nav-item selected">
+        <i class="fa-solid fa-robot"></i>
+        <span class="nav-label">Robot</span>
+    </a>
+    <a href="#" class="nav-item">
+        <i class="fa-regular fa-map"></i>
+        <span class="nav-label">Map</span>
+    </a>
+    <a href="#" class="nav-item">
+        <i class="fa-solid fa-gamepad"></i>
+        <span class="nav-label">Manual</span>
+    </a>
+    <a href="#" class="nav-item">
+        <i class="fa-solid fa-gear"></i>
+        <span class="nav-label">Settings</span>
+    </a>
+</div>

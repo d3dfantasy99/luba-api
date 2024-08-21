@@ -17,6 +17,8 @@ async def run():
     
 if __name__ == '__main__':
     # Create and start the Flask server
+    #logging.basicConfig(level=logging.DEBUG)
+    #logger.getChild("paho").setLevel(logging.WARNING)
     _web_server = WebServer()
     _web_server.start()
     event_loop = asyncio.new_event_loop()
@@ -26,5 +28,5 @@ if __name__ == '__main__':
     interval = 10
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
-    loop.create_task(_web_server.account_utils._lubaMQTT.send_update_data_periodic(interval))
+    loop.create_task(_web_server.account_utils.send_update_data_periodic(interval))
     loop.run_forever()        

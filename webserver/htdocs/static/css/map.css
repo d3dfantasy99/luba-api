@@ -1,0 +1,31 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #e0f7fa;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+/* Imposta le dimensioni della mappa */
+#map {
+    width: 100%;
+    height: 500px; /* Altezza della mappa */
+    margin: 20px 0;
+}
+
+.robot-marker-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px; /* Larghezza dell'immagine del marker */
+    height: 50px; /* Altezza dell'immagine del marker */
+    
+}
+
+/* Stile per il marker personalizzato */
+.robot-marker {
+    width: 50px; /* Larghezza dell'immagine del marker */
+    height: 50px; /* Altezza dell'immagine del marker */
+    background-size: cover; /* Assicurati che l'immagine copra l'elemento */
+    background-image: url('/static/img/newui_icon_map_luba2.png'); /* Sostituisci con il tuo percorso dell'immagine */
+    transform: rotate(45deg); /* Ruota il contenitore del marker */
+}

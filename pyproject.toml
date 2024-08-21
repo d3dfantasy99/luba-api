@@ -6,9 +6,9 @@ authors = ["Andrea Cagnola"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.12,<3.13"
-pyluba = "^0.0.37"
-Flask = "^3.0.3"
+python = ">=3.10,<3.13"
+pymammotion = "0.2.4"
+flask = {version = "3.0.3", extras = ["async"]}
 
 
 [build-system]

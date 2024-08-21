@@ -1,0 +1,53 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Map{% endblock %}
+
+{% block stylesheet %}
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/map.css')}}">
+{% endblock %}
+
+{% block body %}
+    <h1>Mapbox Example</h1>
+    <div id="map"></div> <!-- Mappa verrà inserita qui -->
+
+    <!-- Inserisci il JavaScript di Mapbox -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <script>
+        // Sostituisci con la tua API Key di Mapbox
+        mapboxgl.accessToken = 'pk.eyJ1IjoidGRxNTY5OCIsImEiOiJjbDZ1Y3JleXAwMGtqM2NwMzVlemJkeGIxIn0.Avjd1jP6LHZsFtjZZeGFIg';
+
+        // Crea una nuova mappa
+        const map = new mapboxgl.Map({
+            container: 'map', // ID del div dove verrà inserita la mappa
+            style: 'mapbox://styles/mammotion/clfjg7vgr00du01o4n7jzhlw8', // Sostituisci con il tuo stile
+            center: [12.4964, 41.9028], // Coordinate del centro della mappa (Roma)
+            zoom: 12 // Livello di zoom iniziale
+        });
+
+        // Aggiungi controlli di zoom e rotazione
+        map.addControl(new mapboxgl.NavigationControl());
+
+        // Aggiungi un marker personalizzato
+        map.on('load', () => {
+            // Aggiungi un marker con l'immagine personalizzata
+            new mapboxgl.Marker({
+                element: createRobotMarkerElement()
+            })
+            .setLngLat([12.4964, 41.9028]) // Coordinate del marker (puoi cambiarle)
+            .addTo(map);
+        });
+
+        // Funzione per creare l'elemento del marker
+        function createRobotMarkerElement() {
+            const container = document.createElement('div');
+            container.className = 'robot-marker-container'; // Aggiunge la classe CSS per il contenitore del marker
+
+            const marker = document.createElement('div');
+            marker.className = 'robot-marker'; // Aggiunge la classe CSS per l'immagine del marker
+
+            container.appendChild(marker);
+            return container;
+        }
+    </script>
+{% endblock %}
