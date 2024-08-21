@@ -131,7 +131,7 @@ class AccountUtils:
                         "signal_quality_robot": "", #toDo
                         "signal_quality_ref_station": "", #toDo
                         "lora_status": "Connected" if mammotionDevice.mower.device.sys.toapp_report_data.rtk.lora_info.lora_connection_status == 1 else "Disconnected",
-                        "lora_number": str(mammotionDevice.mower.device.sys.toapp_report_data.rtk.lora_info.pair_code_scan) + "." + str(data.sys.toapp_report_data.rtk.lora_info.pair_code_channel) + "." + str(data.sys.toapp_report_data.rtk.lora_info.pair_code_locid) + "." + str(data.sys.toapp_report_data.rtk.lora_info.pair_code_netid),
+                        "lora_number": str(mammotionDevice.mower.device.sys.toapp_report_data.rtk.lora_info.pair_code_scan) + "." + str(mammotionDevice.mower.device.sys.toapp_report_data.rtk.lora_info.pair_code_channel) + "." + str(mammotionDevice.mower.device.sys.toapp_report_data.rtk.lora_info.pair_code_locid) + "." + str(mammotionDevice.mower.device.sys.toapp_report_data.rtk.lora_info.pair_code_netid),
                     }
                     location = {}
 
