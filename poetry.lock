@@ -331,16 +331,16 @@ paho-mqtt = "*"
 
 [[package]]
 name = "aliyun-python-sdk-core"
-version = "2.15.1"
+version = "2.15.2"
 description = "The core module of Aliyun Python SDK."
 optional = false
 python-versions = "*"
 files = [
-    {file = "aliyun-python-sdk-core-2.15.1.tar.gz", hash = "sha256:518550d07f537cd3afac3b6c93b5c997ce3440e4d0c054e3acbdaa8261e90adf"},
+    {file = "aliyun-python-sdk-core-2.15.2.tar.gz", hash = "sha256:54f66a53e193c61c5e16ea4505a0cab43543f8ad2ef22833f69c4d5e5151c17d"},
 ]
 
 [package.dependencies]
-cryptography = ">=2.6.0"
+cryptography = ">=3.0.0"
 jmespath = ">=0.9.3,<1.0.0"
 
 [[package]]
@@ -521,13 +521,13 @@ docs = ["Sphinx (>=5,<8)", "myst-parser (>=0.18,<3.1)", "sphinx-rtd-theme (>=1,<
 
 [[package]]
 name = "certifi"
-version = "2024.7.4"
+version = "2024.8.30"
 description = "Python package for providing Mozilla's CA Bundle."
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "certifi-2024.7.4-py3-none-any.whl", hash = "sha256:c198e21b1289c2ab85ee4e67bb4b4ef3ead0892059901a8d5b622f24a1101e90"},
-    {file = "certifi-2024.7.4.tar.gz", hash = "sha256:5a1e7645bc0ec61a09e26c36f6106dd4cf40c6db3a1fb6352b0244e7fb057c7b"},
+    {file = "certifi-2024.8.30-py3-none-any.whl", hash = "sha256:922820b53db7a7257ffbda3f597266d435245903d80737e34f8a45ff3e3230d8"},
+    {file = "certifi-2024.8.30.tar.gz", hash = "sha256:bec941d2aa8195e248a60b31ff9f0558284cf01a52591ceda73ea9afffd69fd9"},
 ]
 
 [[package]]
@@ -794,13 +794,43 @@ test-randomorder = ["pytest-randomly"]
 
 [[package]]
 name = "dbus-fast"
-version = "2.23.0"
+version = "2.24.0"
 description = "A faster version of dbus-next"
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
-    {file = "dbus_fast-2.23.0-cp310-cp310-manylinux_2_31_x86_64.whl", hash = "sha256:1cf6a26eabd6fe8ec0e60f9e048391fec3523f5420329e9ae0efad503094bd22"},
-    {file = "dbus_fast-2.23.0.tar.gz", hash = "sha256:e94855875bd9eda0c3bf873ed8c13d42fe24e69acd1d5c4287a172047ab5526e"},
+    {file = "dbus_fast-2.24.0-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:b0f69c272ef1376b5f3a8c899b6aa34d72a568935f90ac269abdf4a74241b57b"},
+    {file = "dbus_fast-2.24.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:014441b49e250f5709b9e43dbdd3fee680edf2d2b50d934ef6ffe1814d16457d"},
+    {file = "dbus_fast-2.24.0-cp310-cp310-manylinux_2_31_x86_64.whl", hash = "sha256:1516eef9726da1de870adaad690ed4b2dc45d2c7e3926e07abb3ac5309fd04e2"},
+    {file = "dbus_fast-2.24.0-cp310-cp310-musllinux_1_2_aarch64.whl", hash = "sha256:aaf255b28b18c1b3caef03a1e3c66716ed23a4fc3e153ccdc8a0558c1078b257"},
+    {file = "dbus_fast-2.24.0-cp310-cp310-musllinux_1_2_x86_64.whl", hash = "sha256:884b09ee6034fae49dde65fd2d2575d1876ff96e893a877778be86417922f139"},
+    {file = "dbus_fast-2.24.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:87ed7661e38457789c8d7f10b067c83267b0610c0de39896bec2ff083a2e0047"},
+    {file = "dbus_fast-2.24.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:ddb5116858e01dcad2326f0519bb805c71da93e0c47ad8a0cfa3730b72de9a79"},
+    {file = "dbus_fast-2.24.0-cp311-cp311-musllinux_1_2_aarch64.whl", hash = "sha256:7be081fd6c1a78fd12a98c6ee47fc2d7437e85f800b037cde189beabf5067a71"},
+    {file = "dbus_fast-2.24.0-cp311-cp311-musllinux_1_2_x86_64.whl", hash = "sha256:3acc7893804d1ca9d438df9742e08b45a9f6e70924e2f706378742f766570191"},
+    {file = "dbus_fast-2.24.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:c1bc8a95cc83556b0e12469ad7c14830419ab3a8bdb1f6ff2a0844c3d0558740"},
+    {file = "dbus_fast-2.24.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e19be18299601f04510bac045172aee53fc04f027f58ee5ade960ef58f8bd716"},
+    {file = "dbus_fast-2.24.0-cp312-cp312-musllinux_1_2_aarch64.whl", hash = "sha256:6f7f45957f3f705d52b586677a44e16a7338e7ac72d616a06048a73755e11553"},
+    {file = "dbus_fast-2.24.0-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:aec31051f632898b12f4ad0841fc89b32ef7918ee0590a7ff31c729660bc4262"},
+    {file = "dbus_fast-2.24.0-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:d14686d9709924888735c88f941c7c4fba95672abd658c050ba6dfd21ce3ea92"},
+    {file = "dbus_fast-2.24.0-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:3697fbf642ea0d36cd8907e6b5a28c336b45e08710e42d96f32a0e881ed3111c"},
+    {file = "dbus_fast-2.24.0-cp313-cp313-musllinux_1_2_aarch64.whl", hash = "sha256:11f69848d86d5f68e4efcf7e40d1c2f1de912b5d8ca0a76ebe4e20e68e6603f8"},
+    {file = "dbus_fast-2.24.0-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:58d5d630c165148c76daef056a5443daacf9c0eabcc28e67d5e9951d5a1a7504"},
+    {file = "dbus_fast-2.24.0-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:5aac69b8e0b3f3b918e06a3448c2b40c8868bddfa715dfaf7f5bbde4d76783f6"},
+    {file = "dbus_fast-2.24.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:90ce8cc1f99da1fac661fda7ae76afc3373d1afb709a8f1c525ddd38c63f7c4c"},
+    {file = "dbus_fast-2.24.0-cp38-cp38-musllinux_1_2_aarch64.whl", hash = "sha256:81621cbd5a172cdfe3649032405e5bfeeb8dafef114bbc48949563d56a082a8b"},
+    {file = "dbus_fast-2.24.0-cp38-cp38-musllinux_1_2_x86_64.whl", hash = "sha256:fcd754fd6cca77fb73815f7ca4d8ae14b72aacdfb027359adfb9ab03e21615ab"},
+    {file = "dbus_fast-2.24.0-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:84ac47e47ee88f80e28004722b3a0398777309c47cb0cd502e8db6afdd836fa6"},
+    {file = "dbus_fast-2.24.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:4065c11993e70c0cae849b2045862b6f221f3d81074488b22257aa898b04c803"},
+    {file = "dbus_fast-2.24.0-cp39-cp39-musllinux_1_2_aarch64.whl", hash = "sha256:c291dbbd3920f4ff4a3051e82d107489cabdb5725c57638b379db74b631b016d"},
+    {file = "dbus_fast-2.24.0-cp39-cp39-musllinux_1_2_x86_64.whl", hash = "sha256:637fa5db4c6c0916cd9b08ba31a59688bd61ff5f796c20ab6801eefb1d9ac712"},
+    {file = "dbus_fast-2.24.0-pp310-pypy310_pp73-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:48869b2eafdcb62d0344e1ed93c97e4a55e981c399dfd9feb3874ebd461feba7"},
+    {file = "dbus_fast-2.24.0-pp310-pypy310_pp73-manylinux_2_17_x86_64.manylinux_2_5_x86_64.manylinux1_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7a2290482d5b5723d0008ba422c0270d6ba7ca28440acfc5bcb96b4da28a21b7"},
+    {file = "dbus_fast-2.24.0-pp38-pypy38_pp73-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:415c5e0673d219cd2254c3d261ca90f4fe0ebc618ab9735b994365387d83f94c"},
+    {file = "dbus_fast-2.24.0-pp38-pypy38_pp73-manylinux_2_17_x86_64.manylinux_2_5_x86_64.manylinux1_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e33f70bf79fe431d7914981ef7792041306675877611c898a1da3a87089fc2de"},
+    {file = "dbus_fast-2.24.0-pp39-pypy39_pp73-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:10c8046391cce8e04f5c6be328743d32614c8c3b59ed2878f7b1edc55ac1c473"},
+    {file = "dbus_fast-2.24.0-pp39-pypy39_pp73-manylinux_2_17_x86_64.manylinux_2_5_x86_64.manylinux1_x86_64.manylinux2014_x86_64.whl", hash = "sha256:a04269b8301944b320a40b08909db26d719d35f5ed5d2f05947436428a1bab99"},
+    {file = "dbus_fast-2.24.0.tar.gz", hash = "sha256:72b59c51e882300fd7f6d5bec8fb84ae8dea58040ade1d15c62c7fd9fa546f35"},
 ]
 
 [[package]]
@@ -968,13 +998,13 @@ files = [
 
 [[package]]
 name = "idna"
-version = "3.7"
+version = "3.8"
 description = "Internationalized Domain Names in Applications (IDNA)"
 optional = false
-python-versions = ">=3.5"
+python-versions = ">=3.6"
 files = [
-    {file = "idna-3.7-py3-none-any.whl", hash = "sha256:82fee1fc78add43492d3a1898bfa6d8a904cc97d8427f683ed8e798d07761aa0"},
-    {file = "idna-3.7.tar.gz", hash = "sha256:028ff3aadf0609c1fd278d8ea3089299412a7a8b9bd005dd08b9f8285bcb5cfc"},
+    {file = "idna-3.8-py3-none-any.whl", hash = "sha256:050b4e5baadcd44d760cedbd2b8e639f2ff89bbc7a5730fcc662954303377aac"},
+    {file = "idna-3.8.tar.gz", hash = "sha256:d838c2c0ed6fced7693d5e8ab8e734d5f8fda53a039c0164afb0b82e771e3603"},
 ]
 
 [[package]]
@@ -1354,22 +1384,22 @@ proxy = ["PySocks"]
 
 [[package]]
 name = "protobuf"
-version = "5.27.3"
+version = "5.28.0"
 description = ""
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "protobuf-5.27.3-cp310-abi3-win32.whl", hash = "sha256:dcb307cd4ef8fec0cf52cb9105a03d06fbb5275ce6d84a6ae33bc6cf84e0a07b"},
-    {file = "protobuf-5.27.3-cp310-abi3-win_amd64.whl", hash = "sha256:16ddf3f8c6c41e1e803da7abea17b1793a97ef079a912e42351eabb19b2cffe7"},
-    {file = "protobuf-5.27.3-cp38-abi3-macosx_10_9_universal2.whl", hash = "sha256:68248c60d53f6168f565a8c76dc58ba4fa2ade31c2d1ebdae6d80f969cdc2d4f"},
-    {file = "protobuf-5.27.3-cp38-abi3-manylinux2014_aarch64.whl", hash = "sha256:b8a994fb3d1c11156e7d1e427186662b64694a62b55936b2b9348f0a7c6625ce"},
-    {file = "protobuf-5.27.3-cp38-abi3-manylinux2014_x86_64.whl", hash = "sha256:a55c48f2a2092d8e213bd143474df33a6ae751b781dd1d1f4d953c128a415b25"},
-    {file = "protobuf-5.27.3-cp38-cp38-win32.whl", hash = "sha256:043853dcb55cc262bf2e116215ad43fa0859caab79bb0b2d31b708f128ece035"},
-    {file = "protobuf-5.27.3-cp38-cp38-win_amd64.whl", hash = "sha256:c2a105c24f08b1e53d6c7ffe69cb09d0031512f0b72f812dd4005b8112dbe91e"},
-    {file = "protobuf-5.27.3-cp39-cp39-win32.whl", hash = "sha256:c84eee2c71ed83704f1afbf1a85c3171eab0fd1ade3b399b3fad0884cbcca8bf"},
-    {file = "protobuf-5.27.3-cp39-cp39-win_amd64.whl", hash = "sha256:af7c0b7cfbbb649ad26132e53faa348580f844d9ca46fd3ec7ca48a1ea5db8a1"},
-    {file = "protobuf-5.27.3-py3-none-any.whl", hash = "sha256:8572c6533e544ebf6899c360e91d6bcbbee2549251643d32c52cf8a5de295ba5"},
-    {file = "protobuf-5.27.3.tar.gz", hash = "sha256:82460903e640f2b7e34ee81a947fdaad89de796d324bcbc38ff5430bcdead82c"},
+    {file = "protobuf-5.28.0-cp310-abi3-win32.whl", hash = "sha256:66c3edeedb774a3508ae70d87b3a19786445fe9a068dd3585e0cefa8a77b83d0"},
+    {file = "protobuf-5.28.0-cp310-abi3-win_amd64.whl", hash = "sha256:6d7cc9e60f976cf3e873acb9a40fed04afb5d224608ed5c1a105db4a3f09c5b6"},
+    {file = "protobuf-5.28.0-cp38-abi3-macosx_10_9_universal2.whl", hash = "sha256:532627e8fdd825cf8767a2d2b94d77e874d5ddb0adefb04b237f7cc296748681"},
+    {file = "protobuf-5.28.0-cp38-abi3-manylinux2014_aarch64.whl", hash = "sha256:018db9056b9d75eb93d12a9d35120f97a84d9a919bcab11ed56ad2d399d6e8dd"},
+    {file = "protobuf-5.28.0-cp38-abi3-manylinux2014_x86_64.whl", hash = "sha256:6206afcb2d90181ae8722798dcb56dc76675ab67458ac24c0dd7d75d632ac9bd"},
+    {file = "protobuf-5.28.0-cp38-cp38-win32.whl", hash = "sha256:eef7a8a2f4318e2cb2dee8666d26e58eaf437c14788f3a2911d0c3da40405ae8"},
+    {file = "protobuf-5.28.0-cp38-cp38-win_amd64.whl", hash = "sha256:d001a73c8bc2bf5b5c1360d59dd7573744e163b3607fa92788b7f3d5fefbd9a5"},
+    {file = "protobuf-5.28.0-cp39-cp39-win32.whl", hash = "sha256:dde9fcaa24e7a9654f4baf2a55250b13a5ea701493d904c54069776b99a8216b"},
+    {file = "protobuf-5.28.0-cp39-cp39-win_amd64.whl", hash = "sha256:853db610214e77ee817ecf0514e0d1d052dff7f63a0c157aa6eabae98db8a8de"},
+    {file = "protobuf-5.28.0-py3-none-any.whl", hash = "sha256:510ed78cd0980f6d3218099e874714cdf0d8a95582e7b059b06cabad855ed0a0"},
+    {file = "protobuf-5.28.0.tar.gz", hash = "sha256:dde74af0fa774fa98892209992295adbfb91da3fa98c8f67a88afe8f5a349add"},
 ]
 
 [[package]]
@@ -1415,13 +1445,13 @@ qt = ["QtPy (>=1.9.0)", "qt-thread-updater (>=0.0.1)"]
 
 [[package]]
 name = "pymammotion"
-version = "0.2.4"
+version = "0.2.22"
 description = ""
 optional = false
 python-versions = "<3.13,>=3.10"
 files = [
-    {file = "pymammotion-0.2.4-py3-none-any.whl", hash = "sha256:b8e8db8d6d6cd7a0b5c0407da18544523e9de136a8d33338350973380d5e8e1d"},
-    {file = "pymammotion-0.2.4.tar.gz", hash = "sha256:c99051eb17322f08019bacd00d096912551ffcd58277134652e5e5c1e253d2a0"},
+    {file = "pymammotion-0.2.22-py3-none-any.whl", hash = "sha256:9b212502cb0d7472b83c138ff38d919f31e8ef3c2847585b52deef322b2a64c2"},
+    {file = "pymammotion-0.2.22.tar.gz", hash = "sha256:19ab2582f796ae987e668f2ec3b436cc00bf3f67dbeb4bd8d1c4d417fcb33cee"},
 ]
 
 [package.dependencies]
@@ -1431,6 +1461,7 @@ alibabacloud-iot-api-gateway = ">=0.0.4,<0.0.5"
 alicloud-gateway-iot = ">=1.0.0,<2.0.0"
 aliyun-iot-linkkit = ">=1.2.12,<2.0.0"
 aliyun-python-sdk-iot = ">=8.57.0,<9.0.0"
+async-timeout = ">=4.0.3,<5.0.0"
 betterproto = ">=1.2.5,<2.0.0"
 bleak = ">=0.21.0"
 bleak-retry-connector = ">=3.5.0,<4.0.0"
@@ -1638,13 +1669,13 @@ files = [
 
 [[package]]
 name = "werkzeug"
-version = "3.0.3"
+version = "3.0.4"
 description = "The comprehensive WSGI web application library."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "werkzeug-3.0.3-py3-none-any.whl", hash = "sha256:fc9645dc43e03e4d630d23143a04a7f947a9a3b5727cd535fdfe155a17cc48c8"},
-    {file = "werkzeug-3.0.3.tar.gz", hash = "sha256:097e5bfda9f0aba8da6b8545146def481d06aa7d3266e7448e2cccf67dd8bd18"},
+    {file = "werkzeug-3.0.4-py3-none-any.whl", hash = "sha256:02c9eb92b7d6c06f31a782811505d2157837cea66aaede3e217c7c27c039476c"},
+    {file = "werkzeug-3.0.4.tar.gz", hash = "sha256:34f2371506b250df4d4f84bfe7b0921e4762525762bbd936614909fe25cd7306"},
 ]
 
 [package.dependencies]
@@ -2001,4 +2032,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "8bad355f4cb05826e74604b22bb34078b41d1b42c3d483f7f51409a8ce3fed48"
+content-hash = "e8003b2119d9c80378885ac1c469f931c65905aab9ec9ee1e394e47ac0ef951f"

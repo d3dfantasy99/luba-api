@@ -27,42 +27,42 @@ class WebServer:
                 return jsonify({"status": False, "data": {}, "error": "Not logget in"}), 401
             if(self.account_utils.iotId_exist(iotId) == False):
                 return jsonify({"status": False, "data": {}, "error": "IotId not found"}), 404
-            device = self.account_utils.get_mammotion_cloud_device_by_iotId(iotId)
-            dev = self.account_utils.get_device_by_iotId(iotId)
+            
+            device_name, device = self.account_utils.get_mammotion_cloud_device_by_iotId(iotId)
             cmd = request.form['cmd']
             if cmd:
                 match cmd:
                     case 'recharge':
-                        mammontionCommand = MammotionCommand(device_name=dev.get('deviceName', '')).return_to_dock()
-                        await device.command(mammontionCommand)
+                        mammontionCommand = MammotionCommand(device_name=device_name).return_to_dock()
+                        await self.account_utils.async_send_command(device_name, mammontionCommand)
                         return jsonify({"status": True, "data": {}, "error": ""}), 200
                     case 'cancel_recharge':
-                        mammontionCommand = MammotionCommand(device_name=dev.get('deviceName', '')).cancel_return_to_dock()
-                        await device.command(mammontionCommand)
+                        mammontionCommand = MammotionCommand(device_name=device_name).cancel_return_to_dock()
+                        await self.account_utils.async_send_command(device_name, mammontionCommand)
                         return jsonify({"status": True, "data": {}, "error": ""}), 200
                     case 'end_job':
-                        mammontionCommand = MammotionCommand(device_name=dev.get('deviceName', '')).cancel_job()
-                        await device.command(mammontionCommand)
+                        mammontionCommand = MammotionCommand(device_name=device_name).cancel_job()
+                        await self.account_utils.async_send_command(device_name, mammontionCommand)
                         return jsonify({"status": True, "data": {}, "error": ""}), 200
                     case 'pause_job':
-                        mammontionCommand = MammotionCommand(device_name=dev.get('deviceName', '')).pause_execute_task()
-                        await device.command(mammontionCommand)
+                        mammontionCommand = MammotionCommand(device_name=device_name).pause_execute_task()
+                        await self.account_utils.async_send_command(device_name, mammontionCommand)
                         return jsonify({"status": True, "data": {}, "error": ""}), 200
                     case 'resume_job':
-                        mammontionCommand = MammotionCommand(device_name=dev.get('deviceName', '')).resume_execute_task()
-                        await device.command(mammontionCommand)
+                        mammontionCommand = MammotionCommand(device_name=device_name).resume_execute_task()
+                        await self.account_utils.async_send_command(device_name, mammontionCommand)
                         return jsonify({"status": True, "data": {}, "error": ""}), 200
                     case 'leave_dock':
-                        mammontionCommand = MammotionCommand(device_name=dev.get('deviceName', '')).leave_dock()
-                        await device.command(mammontionCommand)
+                        mammontionCommand = MammotionCommand(ddevice_name=device_name).leave_dock()
+                        await self.account_utils.async_send_command(device_name, mammontionCommand)
                         return jsonify({"status": True, "data": {}, "error": ""}), 200
                     case 'start_fpv':
-                        mammontionCommand = MammotionCommand(device_name=dev.get('deviceName', '')).device_agora_join_channel_with_position(1)
-                        await device.command(mammontionCommand)
+                        mammontionCommand = MammotionCommand(device_name=device_name).device_agora_join_channel_with_position(1)
+                        await self.account_utils.async_send_command(device_name, mammontionCommand)
                         return jsonify({"status": True, "data": {}, "error": ""}), 200
                     case 'stop_fpv':
-                        mammontionCommand = MammotionCommand(device_name=dev.get('deviceName', '')).device_agora_join_channel_with_position(0)
-                        await device.command(mammontionCommand)
+                        mammontionCommand = MammotionCommand(device_name=device_name).device_agora_join_channel_with_position(0)
+                        await self.account_utils.async_send_command(device_name, mammontionCommand)
                         return jsonify({"status": True, "data": {}, "error": ""}), 200
                     case 'set_blade_control':
                         param = request.form['value']
@@ -70,8 +70,8 @@ class WebServer:
                             return jsonify({"status": False, "data": {}, "error": "Missing param"}), 500
                         if(int(param) != 0 and int(param) != 1):
                             return jsonify({"status": False, "data": {}, "error": "incorrect param - Or 0 or 1"}), 500
-                        mammontionCommand = MammotionCommand(device_name=dev.get('deviceName', '')).set_blade_control(int(param))
-                        await device.command(mammontionCommand)
+                        mammontionCommand = MammotionCommand(device_name=device_name).set_blade_control(int(param))
+                        await self.account_utils.async_send_command(device_name, mammontionCommand)
                         return jsonify({"status": True, "data": {}, "error": ""}), 200
                     case 'set_sidelight':
                         param = request.form['value']
@@ -79,8 +79,8 @@ class WebServer:
                             return jsonify({"status": False, "data": {}, "error": "Missing param"}), 500
                         if(int(param) != 0 and int(param) != 1):
                             return jsonify({"status": False, "data": {}, "error": "incorrect param - Or 0 or 1"}), 500
-                        mammontionCommand = MammotionCommand(device_name=dev.get('deviceName', '')).read_and_set_sidelight(True if int(param) == 1 else False, 1)
-                        await device.command(mammontionCommand)
+                        mammontionCommand = MammotionCommand(device_name=device_name).read_and_set_sidelight(True if int(param) == 1 else False, 1)
+                        await self.account_utils.async_send_command(device_name, mammontionCommand)
                         return jsonify({"status": True, "data": {}, "error": ""}), 200
                     
             return jsonify({"status": False, "data": {}, "error": "Command missing or not found"}), 404

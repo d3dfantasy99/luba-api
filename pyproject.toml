@@ -7,7 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
-pymammotion = "0.2.4"
+pymammotion = "0.2.22"
 flask = {version = "3.0.3", extras = ["async"]}
 
 

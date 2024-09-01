@@ -8,6 +8,8 @@ from aiohttp import ClientSession
 from typing import List
 
 from pymammotion import MammotionHTTP
+from pymammotion.http.http import connect_http
+from pymammotion.mammotion.devices.mammotion import MammotionMixedDeviceManager
 from pymammotion.aliyun.cloud_gateway import CloudIOTGateway
 from pymammotion.const import MAMMOTION_DOMAIN
 from pymammotion.mammotion.commands.mammotion_command import MammotionCommand
@@ -18,6 +20,10 @@ from pymammotion.mammotion.devices.mammotion import MammotionBaseCloudDevice
 
 from pymammotion.data.model.enums import RTKStatus
 from pymammotion.utility.constant.device_constant import WorkMode, device_mode
+from pymammotion.data.model.device import MowingDevice
+from pymammotion.proto.mctrl_sys import RptAct, RptInfoType
+from pymammotion.mammotion.devices.mammotion import create_devices, ConnectionPreference, Mammotion
+from pymammotion.data.model.account import Credentials
 
 class AccountUtils:
     _instance = None
@@ -32,22 +38,27 @@ class AccountUtils:
         if not hasattr(self, '_initialized'):  # Prevent reinitialization
             self._mammotionMQTT : MammotionMQTT = None
             self._devices_list: List[MammotionBaseCloudDevice] = None
+            self._mammotion : Mammotion =  None
             self._initialized = True
     
     def is_login(self) -> bool:
-        if (self._mammotionMQTT is None):
-            return False
+        if self._mammotion is not None:
+                if self._mammotion.mqtt.is_ready:
+                    return True
+        return False
         
     def iotId_exist(self, iotId: str):
-        device = next((device for device in self._devices_list if device.iot_id == iotId), None)
-        return True if device else False
+        for device_name , device  in self._mammotion.devices.devices.items():
+            if device.cloud().iot_id == iotId:
+                return True
+        return False
     
     def get_device_list(self):
         # Esempio di dati di dispositivi ottenuti dinamicamente
         device_list = []
         
         # Esempio di aggiunta dinamica di dati di dispositivi
-        for device in self._mammotionMQTT._cloud_client._listing_dev_by_account_response.data.data:
+        for device in self._mammotion.cloud_client.get_devices_by_account_response().data.data:
             if(device.deviceName.startswith(("Luba-", "Yuka-"))):
                 device_name = f"{device.deviceName}"
                 nick_name = f"{device.nickName}"
@@ -64,15 +75,17 @@ class AccountUtils:
         return device_list
     
     def get_mammotion_cloud_device_by_iotId(self, iotId: str): 
-        device = next((device for device in self._devices_list if device.iot_id == iotId), None)
-        return device
+        for device_name , device  in self._mammotion.devices.devices.items():
+                if device.cloud().iot_id == iotId:
+                    return device_name, device
+        return None, None
     
     def get_device_by_iotId(self, iotId: str):
         # Esempio di dati di dispositivi ottenuti dinamicamente
         device = None
         
         # Esempio di aggiunta dinamica di dati di dispositivi
-        for device in self._mammotionMQTT._cloud_client._listing_dev_by_account_response.data.data:
+        for device in self._mammotion.cloud_client.get_devices_by_account_response().data.data:
             if(device.iotId == iotId):
                 device_name = f"{device.deviceName}"
                 nick_name = f"{device.nickName}"
@@ -113,30 +126,36 @@ class AccountUtils:
         return device_list
     
     def get_device_status_by_iotId(self, iotId: str, format:str = None) -> str:
-        mammotionDevice = next((device for device in self._devices_list if device.iot_id == iotId), None)
+        mammotionDevice: MammotionMixedDeviceManager = None
+        deviceName: str = None
+        for device_name , device  in self._mammotion.devices.devices.items():
+            if device.cloud().iot_id == iotId:
+                mammotionDevice = device
+                deviceName = device_name
+                break
         if mammotionDevice:
             if format is not None:
                 if format == "human":
                     device = {
-                        "battery_status": f"{str(mammotionDevice.mower.device.sys.toapp_report_data.dev.battery_val)}%" + (" (Charging)" if mammotionDevice.mower.device.sys.toapp_report_data.dev.charge_state == 1 else ""),
-                        "wifiRSSI": f"{str(mammotionDevice.mower.device.sys.toapp_report_data.connect.wifi_rssi)}dBm",
-                        "bleRSSI": f"{str(mammotionDevice.mower.device.sys.toapp_report_data.connect.ble_rssi)}dBm",
-                        "robot_status": device_mode(mammotionDevice.mower.device.sys.toapp_report_data.dev.sys_status)
+                        "battery_status": f"{str(mammotionDevice.mower_state().report_data.dev.battery_val)}%" + (" (Charging)" if mammotionDevice.mower_state().report_data.dev.charge_state == 1 else ""),
+                        "wifiRSSI": f"{str(mammotionDevice.mower_state().report_data.connect.wifi_rssi)}dBm",
+                        "bleRSSI": f"{str(mammotionDevice.mower_state().report_data.connect.ble_rssi)}dBm",
+                        "robot_status": device_mode(mammotionDevice.mower_state().report_data.dev.sys_status)
                     }
                     rtk = {
-                        "pos_status": str(RTKStatus.from_value(mammotionDevice.mower.device.sys.toapp_report_data.rtk.status)),
-                        "robot_sat": str(mammotionDevice.mower.device.sys.toapp_report_data.rtk.gps_stars),
-                        "ref_station_sat": str(int(mammotionDevice.mower.device.sys.toapp_report_data.rtk.dis_status) >> 16 & 255) + "L1 " + str(int(mammotionDevice.mower.device.sys.toapp_report_data.rtk.dis_status) >> 24 & 255) + "L2",
-                        "co_view_sat" : str(int(mammotionDevice.mower.device.sys.toapp_report_data.rtk.co_view_stars) >> 0 & 255) + "L1 " + str(int(mammotionDevice.mower.device.sys.toapp_report_data.rtk.co_view_stars) >> 8 & 255) + "L2",
+                        "pos_status": str(RTKStatus.from_value(mammotionDevice.mower_state().report_data.rtk.status)),
+                        "robot_sat": str(mammotionDevice.mower_state().report_data.rtk.gps_stars),
+                        "ref_station_sat": "", #str(int(mammotionDevice.mower_state().report_data.rtk.dis_status) >> 16 & 255) + "L1 " + str(int(mammotionDevice.mower_state().report_data.rtk.dis_status) >> 24 & 255) + "L2",
+                        "co_view_sat" : str(int(mammotionDevice.mower_state().report_data.rtk.co_view_stars) >> 0 & 255) + "L1 " + str(int(mammotionDevice.mower_state().report_data.rtk.co_view_stars) >> 8 & 255) + "L2",
                         "signal_quality_robot": "", #toDo
                         "signal_quality_ref_station": "", #toDo
-                        "lora_status": "Connected" if mammotionDevice.mower.device.sys.toapp_report_data.rtk.lora_info.lora_connection_status == 1 else "Disconnected",
-                        "lora_number": str(mammotionDevice.mower.device.sys.toapp_report_data.rtk.lora_info.pair_code_scan) + "." + str(mammotionDevice.mower.device.sys.toapp_report_data.rtk.lora_info.pair_code_channel) + "." + str(mammotionDevice.mower.device.sys.toapp_report_data.rtk.lora_info.pair_code_locid) + "." + str(mammotionDevice.mower.device.sys.toapp_report_data.rtk.lora_info.pair_code_netid),
+                        "lora_status": "Connected" if mammotionDevice.mower_state().report_data.rtk.status == 1 else "Disconnected",
+                        "lora_number": "",
                     }
                     location = {}
 
-                    if len(mammotionDevice.mower.device.sys.toapp_report_data.locations) > 0:
-                        loc = mammotionDevice.mower.device.sys.toapp_report_data.locations[0]
+                    if len(mammotionDevice.mower_state().report_data.locations) > 0:
+                        loc = mammotionDevice.mower_state().report_data.locations[0]
                         loc.real_pos_x
                         location = {
                             "lat": str(self.get_parse_double_data(loc.real_pos_x, 4)),
@@ -144,15 +163,15 @@ class AccountUtils:
                         }
                     work = {}
 
-                    if(mammotionDevice.mower.device.sys.toapp_report_data.dev.sys_status >= 13 and mammotionDevice.mower.device.sys.toapp_report_data.dev.sys_status <= 19):
+                    if(mammotionDevice.mower_state().report_data.dev.sys_status >= 13 and mammotionDevice.mower_state().report_data.dev.sys_status <= 19):
                         work = {
-                            "total_area": str(mammotionDevice.mower.device.sys.toapp_report_data.work.area & 65535) + "m²",
-                            "mowing_speed": str(mammotionDevice.mower.device.sys.toapp_report_data.work.man_run_speed / 100) + "m/s",
-                            "progress": str(mammotionDevice.mower.device.sys.toapp_report_data.work.area >> 16) + "%",
-                            "total_time": str(mammotionDevice.mower.device.sys.toapp_report_data.work.progress & 65535) + "min",
-                            "elapsed_time": str((mammotionDevice.mower.device.sys.toapp_report_data.work.progress & 65535) - (mammotionDevice.mower.device.sys.toapp_report_data.work.progress >> 16)) + "min",
-                            "left_time": str(mammotionDevice.mower.device.sys.toapp_report_data.work.progress >> 16)+ "min",
-                            "blade_height": str(mammotionDevice.mower.device.sys.toapp_report_data.work.knife_height)+ "mm"
+                            "total_area": str(mammotionDevice.mower_state().report_data.work.area & 65535) + "m²",
+                            "mowing_speed": str(mammotionDevice.mower_state().report_data.work.man_run_speed / 100) + "m/s",
+                            "progress": str(mammotionDevice.mower_state().report_data.work.area >> 16) + "%",
+                            "total_time": str(mammotionDevice.mower_state().report_data.work.progress & 65535) + "min",
+                            "elapsed_time": str((mammotionDevice.mower_state().report_data.work.progress & 65535) - (mammotionDevice.mower_state().report_data.work.progress >> 16)) + "min",
+                            "left_time": str(mammotionDevice.mower_state().report_data.work.progress >> 16)+ "min",
+                            "blade_height": str(mammotionDevice.mower_state().report_data.work.knife_height)+ "mm"
                         }
 
                     content = {
@@ -163,7 +182,7 @@ class AccountUtils:
                     }
 
                     return json.dumps(content)
-            return mammotionDevice.mower.device.to_json()
+            return mammotionDevice.mower_state().device.to_json()
         else:
             return "{}"
 
@@ -172,64 +191,60 @@ class AccountUtils:
         format_string = f"{{:.{digits}f}}"
         return float(format_string.format(value))
     
+    async def async_send_command(self, device_name: str, command: str, **kwargs: any) -> None:
+        try:
+            await self._mammotion.send_command_with_args(
+                device_name, command, **kwargs
+            )
+        except Exception as exc:
+            pass
+    
+    async def async_request_iot_sync(self, device_name: str) -> None:
+        await self.async_send_command(
+            device_name,
+            "request_iot_sys",
+            rpt_act=RptAct.RPT_START,
+            rpt_info_type=[
+                RptInfoType.RIT_CONNECT,
+                RptInfoType.RIT_DEV_STA,
+                RptInfoType.RIT_DEV_LOCAL,
+                RptInfoType.RIT_RTK,
+                RptInfoType.RIT_WORK,
+            ],
+            timeout=1000,
+            period=3000,
+            no_change_period=4000,
+            count=0,
+        )
+    
     async def send_update_data_periodic(self, interval: int):
-        while True:
-            logger.debug("TASK aggiornamento dati: numero devices " + str(len(self._devices_list)))
-            for device in self._devices_list:
-                if self._mammotionMQTT._cloud_client is not None:
-                    logger.debug(f"Try send update for {device.iot_id}")
-                    await device.start_sync(0) 
+        while True:          
+            if self._mammotion is not None:
+                if self._mammotion.mqtt.is_ready:
+                    logger.debug("TASK aggiornamento dati: numero devices " + str(len(self._mammotion.devices.devices)))
+                    for device_name , device  in self._mammotion.devices.devices.items():
+                        if (
+                            len(device.mower_state().net.toapp_devinfo_resp.resp_ids) == 0
+                            or device.mower_state().net.toapp_wifi_iot_status.productkey is None
+                        ):
+                            await self._mammotion.start_sync(device_name, 0)
+                        if device.mower_state().report_data.dev.sys_status != WorkMode.MODE_WORKING:
+                            await self.async_send_command(device_name, "get_report_cfg")
+
+                        else:
+                            await self.async_request_iot_sync(device_name)
             await asyncio.sleep(interval)
             
     
     async def login(self, email: str, password: str) -> bool:
-        if (self._mammotionMQTT is not None):
-            self._mammotionMQTT.disconnect()
         try:
-            async with ClientSession(MAMMOTION_DOMAIN) as session:
-                    cloud_client = CloudIOTGateway()
-                    luba_http = await MammotionHTTP.login(session, email, password)
-                    country_code = luba_http.data.userInformation.domainAbbreviation
-                    logger.debug("CountryCode: " + country_code)
-                    logger.debug("AuthCode: " + luba_http.data.authorization_code)
-                    cloud_client.get_region(country_code, luba_http.data.authorization_code)
-                    await cloud_client.connect()
-                    await cloud_client.login_by_oauth(country_code, luba_http.data.authorization_code)
-                    cloud_client.aep_handle()
-                    cloud_client.session_by_auth_code()
-                    cloud_client.list_binding_by_account()
-
-                    
-                    iotIds = []
-                    for device in self.get_device_list_init(cloud_client._listing_dev_by_account_response):
-                        iotIds.append(device.get('iotID'))
-                    
-
-
-                    self._mammotionMQTT = MammotionMQTT(region_id=cloud_client._region.data.regionId,
-                        product_key=cloud_client._aep_response.data.productKey,
-                        device_name=cloud_client._aep_response.data.deviceName,
-                        device_secret=cloud_client._aep_response.data.deviceSecret, iot_token=cloud_client._session_by_authcode_response.data.iotToken, client_id=cloud_client._client_id)
-
-                    self._mammotionMQTT._cloud_client = cloud_client
-                    #luba.connect() blocks further calls
-                    self._mammotionMQTT.connect_async()
-
-                    self._devices_list: List[MammotionBaseCloudDevice] = []
-                    for device in cloud_client._listing_dev_by_account_response.data.data:
-                        if(device.deviceName.startswith(("Luba-", "Yuka-"))):
-                            dev = MammotionBaseCloudDevice (
-                                mqtt_client=self._mammotionMQTT,
-                                iot_id=device.iotId,
-                                device_name=device.deviceName,
-                                nick_name=device.nickName
-                            )
-                            self._devices_list.append(dev)
-                    
-                    self._mammotionMQTT.on_message = lambda topic, payload, iot_id: [
-                        device._on_mqtt_message(topic, payload, iot_id) for device in self._devices_list if device.iot_id == iot_id
-                    ]
-                    return True
+            credentials = Credentials(
+            email=email,
+            password=password
+            )   
+            self._mammotion = await create_devices(ble_device=None, cloud_credentials=credentials, preference=ConnectionPreference.WIFI)
+            
+            return True
         except Exception as ex:
             logger.error(f"{ex}")
             logger.error(traceback.format_exc())
