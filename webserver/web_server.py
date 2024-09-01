@@ -34,7 +34,7 @@ class WebServer:
                 match cmd:
                     case 'recharge':
                         mammontionCommand = MammotionCommand(device_name=device_name).return_to_dock()
-                        await self.account_utils.async_send_command(device_name, mammontionCommand)
+                        await self.account_utils.async_send_command(device_name, "return_to_dock")
                         return jsonify({"status": True, "data": {}, "error": ""}), 200
                     case 'cancel_recharge':
                         mammontionCommand = MammotionCommand(device_name=device_name).cancel_return_to_dock()
@@ -54,7 +54,7 @@ class WebServer:
                         return jsonify({"status": True, "data": {}, "error": ""}), 200
                     case 'leave_dock':
                         mammontionCommand = MammotionCommand(ddevice_name=device_name).leave_dock()
-                        await self.account_utils.async_send_command(device_name, mammontionCommand)
+                        await self.account_utils.async_send_command(device_name, "leave_dock")
                         return jsonify({"status": True, "data": {}, "error": ""}), 200
                     case 'start_fpv':
                         mammontionCommand = MammotionCommand(device_name=device_name).device_agora_join_channel_with_position(1)
